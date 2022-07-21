@@ -1,0 +1,176 @@
+{
+    "_index": "suri-filebeat-spokanevalley-2022.07.19",
+    "_type": "_doc",
+    "_id": "lb5fFYIBvgIgoW6pK97z",
+    "_version": 1,
+    "_score": null,
+    "_source": {
+      "agent": {
+        "hostname": "spokanevalley",
+        "name": "spokanevalley",
+        "id": "d5a6c047-0414-43a5-956b-1795a2123e13",
+        "type": "filebeat",
+        "ephemeral_id": "5868dcfd-0fc3-47bd-a38b-dc343e6a5ca3",
+        "version": "7.11.2"
+      },
+      "clientID": "spokanevalley",
+      "log": {
+        "file": {
+          "path": "/var/log/suricata/eve.json"
+        },
+        "offset": 531281491
+      },
+      "destination": {
+        "address": "172.16.224.5",
+        "port": 443,
+        "bytes": 0,
+        "ip": "172.16.224.5",
+        "packets": 0
+      },
+      "rule": {
+        "name": "ET 3CORESec Poor Reputation IP group 14",
+        "id": "2525013",
+        "category": "Misc Attack"
+      },
+      "source": {
+        "geo": {
+          "continent_name": "North America",
+          "country_iso_code": "US",
+          "country_name": "United States",
+          "location": {
+            "lon": -97.822,
+            "lat": 37.751
+          }
+        },
+        "address": "167.94.138.97",
+        "port": 4642,
+        "bytes": 64,
+        "ip": "167.94.138.97",
+        "packets": 1
+      },
+      "type": "filebeat",
+      "network": {
+        "community_id": "1:yjqt0qbvomP0hA4Jb4qFcR+nUxA=",
+        "bytes": 64,
+        "transport": "tcp",
+        "packets": 1
+      },
+      "total": {
+        "bytes": 64
+      },
+      "ecs": {
+        "version": "1.7.0"
+      },
+      "related": {
+        "ip": [
+          "167.94.138.97",
+          "172.16.224.5"
+        ]
+      },
+      "@version": "1",
+      "host": {
+        "hostname": "spokanevalley",
+        "os": {
+          "kernel": "4.15.0-118-generic",
+          "codename": "bionic",
+          "name": "Ubuntu",
+          "family": "debian",
+          "version": "18.04.5 LTS (Bionic Beaver)",
+          "platform": "ubuntu"
+        },
+        "containerized": false,
+        "ip": [
+          "fe80::6a1c:a2ff:fe13:108d",
+          "172.16.224.17",
+          "fe80::a6bb:6dff:feb8:c591"
+        ],
+        "name": "spokanevalley",
+        "id": "bbba919b00a045d4a169b6a576cf1d0a",
+        "mac": [
+          "68:1c:a2:13:10:8d",
+          "a4:bb:6d:b8:c5:91"
+        ],
+        "architecture": "x86_64"
+      },
+      "event": {
+        "severity": 2,
+        "ingested": "2022-07-19T07:32:14.936375850Z",
+        "original": "{\"timestamp\":\"2022-07-19T07:32:12.999581+0000\",\"flow_id\":1224501047869597,\"in_iface\":\"enp1s0\",\"event_type\":\"alert\",\"vlan\":99,\"src_ip\":\"167.94.138.97\",\"src_port\":4642,\"dest_ip\":\"172.16.224.5\",\"dest_port\":443,\"proto\":\"TCP\",\"alert\":{\"action\":\"allowed\",\"gid\":1,\"signature_id\":2525013,\"rev\":520,\"signature\":\"ET 3CORESec Poor Reputation IP group 14\",\"category\":\"Misc Attack\",\"severity\":2},\"flow\":{\"pkts_toserver\":1,\"pkts_toclient\":0,\"bytes_toserver\":64,\"bytes_toclient\":0,\"start\":\"2022-07-19T07:32:12.999581+0000\"}}",
+        "created": "2022-07-19T07:32:13.135Z",
+        "kind": "alert",
+        "module": "suricata",
+        "start": "2022-07-19T07:32:12.999Z",
+        "category": [
+          "network",
+          "intrusion_detection"
+        ],
+        "type": [
+          "allowed"
+        ],
+        "dataset": "suricata.eve"
+      },
+      "beats": {
+        "pipeline": "filebeat-7.11.2-suricata-eve-pipeline"
+      },
+      "fileset": {
+        "name": "eve"
+      },
+      "message": "Misc Attack",
+      "tags": [
+        "suricata",
+        "filebeat",
+        "beats_input_raw_event",
+        "filebeat",
+        "internalDst",
+        "out2in"
+      ],
+      "input": {
+        "type": "log"
+      },
+      "@timestamp": "2022-07-19T07:32:12.999Z",
+      "service": {
+        "type": "suricata"
+      },
+      "suricata": {
+        "eve": {
+          "in_iface": "enp1s0",
+          "event_type": "alert",
+          "vlan": 99,
+          "alert": {
+            "rev": 520,
+            "signature_id": 2525013,
+            "gid": 1,
+            "signature": "ET 3CORESec Poor Reputation IP group 14",
+            "category": "Misc Attack"
+          },
+          "flow_id": 1224501047869597,
+          "flow": {}
+        }
+      }
+    },
+    "fields": {
+      "event.ingested": [
+        "2022-07-19T07:32:14.936Z"
+      ],
+      "@timestamp": [
+        "2022-07-19T07:32:12.999Z"
+      ],
+      "event.start": [
+        "2022-07-19T07:32:12.999Z"
+      ],
+      "event.created": [
+        "2022-07-19T07:32:13.135Z"
+      ],
+      "suricata.eve.flow.start": [
+        "2022-07-19T07:32:12.999Z"
+      ],
+      "suricata.eve.timestamp": [
+        "2022-07-19T07:32:12.999Z"
+      ]
+    },
+    "sort": [
+      1658215932999,
+      3026736
+    ],
+    "$$_isAnchor": true
+  }
