@@ -1,21 +1,30 @@
-import webbrowser, time
+import webbrowser
+import time
 
 # Path to browser executable
 browser = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe %s"
 
 # List of Links used for IP lookup
 
-links = {"https://www.abuseipdb.com/check/","https://www.virustotal.com/gui/ip-address/", "https://talosintelligence.com/reputation_center/lookup?search=","https://otx.alienvault.com/indicator/ip/"}
+links = {"https://www.abuseipdb.com/check/", "https://www.virustotal.com/gui/ip-address/",
+         "https://talosintelligence.com/reputation_center/lookup?search=", "https://otx.alienvault.com/indicator/ip/", "https://www.shodan.io/host/"}
 
 # function to iterate over links, opening new web browser page and new tabs with the passed in ip address
+
+
 def lookup(ipAddress):
+    webbrowser.open_new_tab(
+        "https://www.virustotal.com/gui/ip-address/"+ipAddress)
+    time.sleep(0.25)
+    webbrowser.open_new_tab(
+        "https://talosintelligence.com/reputation_center/lookup?search="+ipAddress)
+    time.sleep(0.25)
+    webbrowser.open_new_tab(
+        "https://otx.alienvault.com/indicator/ip/"+ipAddress)
+    time.sleep(0.25)
+    webbrowser.open_new_tab("https://www.shodan.io/host/"+ipAddress)
+    time.sleep(0.25)
     webbrowser.open_new("https://www.abuseipdb.com/check/"+ipAddress)
-    time.sleep(0.25)
-    webbrowser.open_new_tab("https://www.virustotal.com/gui/ip-address/"+ipAddress)
-    time.sleep(0.25)
-    webbrowser.open_new_tab("https://talosintelligence.com/reputation_center/lookup?search="+ipAddress)
-    time.sleep(0.25)
-    webbrowser.open_new_tab("https://otx.alienvault.com/indicator/ip/"+ipAddress)
 
 
 def main():
@@ -25,8 +34,9 @@ def main():
         if ipAddress == exitStatement:
             print("exiting")
             exit()
-        print("Looking up IP "+ ipAddress)
+        print("Looking up IP " + ipAddress)
         lookup(ipAddress)
+
 
 if __name__ == '__main__':
     main()

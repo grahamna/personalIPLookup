@@ -13,7 +13,7 @@ def importJsonFile(fileLocation):
 def printTicketTemplate(importedJson):
     print()
     print("@timestamp : " + importedJson['_source']['@timestamp'])
-    print("agent.hostname :" + importedJson['_source']['agent']['hostname'])
+    print("agent.hostname : " + importedJson['_source']['agent']['hostname'])
     print()
     print("direction of traffic : " + importedJson['_source']['tags'][-1])
     print()
@@ -48,6 +48,7 @@ def printTicketTemplate(importedJson):
     print("https://www.virustotal.com/gui/ip-address/"+ipAddress)
     print("https://talosintelligence.com/reputation_center/lookup?search="+ipAddress)
     print("https://otx.alienvault.com/indicator/ip/"+ipAddress)
+    print("https://www.shodan.io/host/"+ipAddress)
     print()
 
 
