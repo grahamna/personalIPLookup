@@ -1,19 +1,19 @@
 {
-  "_index": "suri-filebeat-kittitas-2022.08.31",
+  "_index": "suri-filebeat-KittyCity-2022.08.31",
   "_type": "_doc",
-  "_id": "Y8-4a4IBPNdo1pUkvksu",
+  "_id": "Y8-AnID",
   "_version": 1,
   "_score": null,
   "_source": {
     "agent": {
-      "hostname": "kittitas",
-      "name": "kittitas",
+      "hostname": "KittyCity",
+      "name": "KittyCity",
       "id": "7d8d6733-c530-480d-8e6a-a732f65485f9",
       "type": "filebeat",
       "ephemeral_id": "feff26a8-c23e-4dd1-a2f6-68d1e74be756",
       "version": "7.11.2"
     },
-    "clientID": "kittitas",
+    "clientID": "KittyCity",
     "log": {
       "file": {
         "path": "/var/log/suricata/eve.json"
@@ -21,15 +21,15 @@
       "offset": 1672113447
     },
     "destination": {
-      "address": "172.28.229.77",
+      "address": "no",
       "port": 48764,
       "bytes": 74,
-      "ip": "172.28.229.77",
+      "ip": "no",
       "packets": 1
     },
     "rule": {
-      "name": "ET CINS Active Threat Intelligence Poor Reputation IP group 57",
-      "id": "2403356",
+      "name": "ET CINS Active Threat Intelligence Poor Reputation IP group no",
+      "id": "no",
       "category": "Misc Attack"
     },
     "source": {
@@ -41,8 +41,8 @@
         "country_name": "United States",
         "region_name": "Washington",
         "location": {
-          "lon": -122.3451,
-          "lat": 47.6348
+          "lon": 1,
+          "lat": 8
         }
       },
       "as": {
@@ -51,15 +51,15 @@
           "name": "Amazon.com, Inc."
         }
       },
-      "address": "52.84.162.53",
+      "address": "no",
       "port": 443,
       "bytes": 148,
-      "ip": "52.84.162.53",
+      "ip": "no",
       "packets": 2
     },
     "type": "filebeat",
     "network": {
-      "community_id": "1:r703cqsJYPwbYG4OZcBA6GUW+kk=",
+      "community_id": "1:+kk=",
       "bytes": 222,
       "transport": "tcp",
       "packets": 3
@@ -72,12 +72,12 @@
     },
     "related": {
       "ip": [
-        "52.84.162.53",
-        "172.28.229.77"
+        "no",
+        "no"
       ]
     },
     "host": {
-      "hostname": "kittitas",
+      "hostname": "KittyCity",
       "os": {
         "kernel": "4.15.0-118-generic",
         "codename": "bionic",
@@ -87,30 +87,27 @@
         "platform": "ubuntu"
       },
       "ip": [
-        "192.168.90.234",
-        "fe80::1618:77ff:fe31:e1f0",
-        "fe80::1618:77ff:fe31:e1f2"
+        "no",
+        "no",
+        "no"
       ],
       "containerized": false,
-      "name": "kittitas",
+      "name": "KittyCity",
       "id": "0ec8e60aafc74cbcbc3bae44ec5f7ac5",
       "mac": [
-        "14:18:77:31:e1:ec",
-        "14:18:77:31:e1:ee",
-        "14:18:77:31:e1:f0",
-        "14:18:77:31:e1:f2"
+        "2"
       ],
-      "architecture": "x86_64"
+      "architecture": "no"
     },
     "@version": "1",
     "event": {
       "severity": 2,
-      "ingested": "2022-08-05T01:57:25.667597983Z",
-      "original": "{\"timestamp\":\"2022-08-05T01:57:24.058770+0000\",\"flow_id\":1040737030694161,\"in_iface\":\"eno4\",\"event_type\":\"alert\",\"src_ip\":\"52.84.162.53\",\"src_port\":443,\"dest_ip\":\"172.28.229.77\",\"dest_port\":48764,\"proto\":\"TCP\",\"alert\":{\"action\":\"allowed\",\"gid\":1,\"signature_id\":2403356,\"rev\":76336,\"signature\":\"ET CINS Active Threat Intelligence Poor Reputation IP group 57\",\"category\":\"Misc Attack\",\"severity\":2},\"flow\":{\"pkts_toserver\":2,\"pkts_toclient\":1,\"bytes_toserver\":148,\"bytes_toclient\":74,\"start\":\"2022-08-05T01:57:24.058641+0000\"}}",
-      "created": "2022-08-05T01:57:24.179Z",
+      "ingested": "no:no:25.667597983Z",
+      "original": "nope",
+      "created": "no:no:24.179Z",
       "kind": "alert",
       "module": "suricata",
-      "start": "2022-08-05T01:57:24.058Z",
+      "start": "no:no:24.058Z",
       "category": [
         "network",
         "intrusion_detection"
@@ -138,7 +135,7 @@
     "input": {
       "type": "log"
     },
-    "@timestamp": "2022-08-05T01:57:24.058Z",
+    "@timestamp": "no:69:69.no",
     "service": {
       "type": "suricata"
     },
@@ -147,46 +144,46 @@
         "in_iface": "eno4",
         "event_type": "alert",
         "alert": {
-          "rev": 76336,
-          "signature_id": 2403356,
+          "rev": no,
+          "signature_id": no,
           "gid": 1,
-          "signature": "ET CINS Active Threat Intelligence Poor Reputation IP group 57",
+          "signature": "ET CINS Active Threat Intelligence Poor Reputation IP group no",
           "category": "Misc Attack"
         },
-        "flow_id": 1040737030694161,
+        "flow_id": no,
         "flow": {}
       }
     }
   },
   "fields": {
     "event.ingested": [
-      "2022-08-05T01:57:25.667Z"
+      "no:no:25.no"
     ],
     "@timestamp": [
-      "2022-08-05T01:57:24.058Z"
+      "no:no:24.no"
     ],
     "event.start": [
-      "2022-08-05T01:57:24.058Z"
+      "no:no:24.no"
     ],
     "event.created": [
-      "2022-08-05T01:57:24.179Z"
+      "no:no:24.no"
     ],
     "suricata.eve.flow.start": [
-      "2022-08-05T01:57:24.058Z"
+      "no:no:24.no"
     ],
     "suricata.eve.timestamp": [
-      "2022-08-05T01:57:24.058Z"
+      "no:no:24.no"
     ]
   },
   "highlight": {
     "agent.hostname": [
-      "@kibana-highlighted-field@kittitas@/kibana-highlighted-field@"
+      "@kibana-highlighted-field@KittyCity@/kibana-highlighted-field@"
     ],
     "tags": [
       "@kibana-highlighted-field@out2in@/kibana-highlighted-field@"
     ]
   },
   "sort": [
-    1659664644058
+    nope
   ]
 }
