@@ -12,7 +12,7 @@
  time
 ## Compatibility
  This script was developed and tested on Windows 10 using Python 3.9. It may require modifications to be compatible with other operating systems or Python versions.
-
+------------------------------------
  # personalTicketHelper
  This Python script printTicketTemplate.py is used to extract and print data from a JSON file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format.
 
