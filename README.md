@@ -1,4 +1,4 @@
-# personalIPLookUp
+# **personalIPLookUp**
  This Python script allows users to quickly lookup an IP address across multiple websites. It utilizes the webbrowser and time modules to open new tabs in a web browser for each of the provided links.
 
 ## Setup
@@ -8,12 +8,13 @@
  To use the IP Lookup Tool, simply run the script and enter an IP address when prompted. The tool will automatically open new tabs in the web browser for each of the provided links. To exit the tool, enter "q" when prompted for an IP address.
 
 ## Dependencies
- webbrowser
+ webbrowser, 
  time
+ 
 ## Compatibility
  This script was developed and tested on Windows 10 using Python 3.9. It may require modifications to be compatible with other operating systems or Python versions.
-------------------------------------
- # personalTicketHelper
+ ------------------------------------
+ # **personalTicketHelper**
  This Python script printTicketTemplate.py is used to extract and print data from a JSON file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format.
 
 ## Requirements
@@ -23,6 +24,7 @@
  Ensure that temp.json is present in the same directory as the script.
  Run the script using the command python printTicketTemplate.py
  The script will extract the required data from temp.json and print it in the specified format.
+
 ## Functionality
  This script includes two functions:
 
