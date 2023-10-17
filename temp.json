@@ -8,9 +8,9 @@
     "agent": {
       "hostname": "KittyCity",
       "name": "KittyCity",
-      "id": "7d8d6733-c530-480d-8e6a-a732f65485f9",
+      "id": "7d8d6733-c530-480d-8e6a-no",
       "type": "filebeat",
-      "ephemeral_id": "feff26a8-c23e-4dd1-a2f6-68d1e74be756",
+      "ephemeral_id": "feff26a8-c23e-4dd1-a2f6-mnmmoo",
       "version": "7.11.2"
     },
     "clientID": "KittyCity",
@@ -93,7 +93,7 @@
       ],
       "containerized": false,
       "name": "KittyCity",
-      "id": "0ec8e60aafc74cbcbc3bae44ec5f7ac5",
+      "id": "nope",
       "mac": [
         "2"
       ],
