@@ -1,3 +1,9 @@
+/* Nathan Graham 10/17/2023 - Personal use
+gcc (GCC) 13.2.1 20230801
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
