@@ -41,17 +41,27 @@ def printTicketTemplate(importedTxt):
       
       for line in importedTxt:
             if (line.startswith("User")):
-                  temp = re.split(r'\s+|\t',line)
-                  User_origin = temp[1].strip()
-                  User_impacted = temp[2].strip()
+                  if (line.startswith("User Agent")):
+                        temp = line.split("User Agent")
+                        User_Agent= temp[1].strip()
+                  else:
+                        temp = re.split(r'\s+|\t',line)
+                        if (temp[1].strip()!=''):
+                              User_origin = temp[1].strip()
+                        if (temp[2].strip()!=''):
+                              User_impacted = temp[2].strip()
             elif (line.startswith("Host") and not line.startswith("Host (I")):
                   temp = line.split('\t')
-                  Hosts_origin = temp[1].strip()
-                  Hosts_impacted = temp[2].strip()
+                  if (temp[1].strip()!=''):
+                        Hosts_origin = temp[1].strip()
+                  if (temp[2].strip()!=''):
+                        Hosts_impacted = temp[2].strip()
             elif (line.startswith("TCP/UDP Port")):
                   temp = line.split("\t", )
-                  Port_origin = temp[1].strip()
-                  Port_impacted = temp[2].strip()
+                  if (temp[1].strip()!=''):
+                        Port_origin = temp[1].strip()
+                  if (temp[2].strip()!=''):
+                        Port_impacted = temp[2].strip()
             elif (line.startswith("Host (Impacted) KBytes Total")):
                   temp = line.split("Host (Impacted) KBytes Total", )
                   Host_KBytes_Total = temp[1].strip()
@@ -86,10 +96,10 @@ def printTicketTemplate(importedTxt):
                   temp = line.split("URL")
                   URL_Obj = temp[1].strip()
             elif (line.startswith("Domain (Impacted)")):
-                  temp = line.split("Domain (Impacted)",line)
+                  temp = line.split("Domain (Impacted)")
                   Domain_impacted = temp[1].strip()
             elif (line.startswith("Domain (Origin)")):
-                  temp = line.split("Domain (Origin)",line)
+                  temp = line.split("Domain (Origin)")
                   Domain_origin = temp[1].strip()
             line = None
       
@@ -135,10 +145,10 @@ def printTicketTemplate(importedTxt):
                   else:
                         f.write(line+'\n')
       
-      # if (Direction == "Outbound"):
-      #       ipLookup.lookup(Hosts_impacted)
-      # elif (Direction == "External"):
-      #       ipLookup.lookup(Hosts_origin)
+      if (Direction == "Outbound"):
+            ipLookup.lookup(Hosts_impacted)
+      elif (Direction == "External"):
+            ipLookup.lookup(Hosts_origin)
       
 def main():
     importedTxt = importTxtFile('temp.txt')
