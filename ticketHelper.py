@@ -85,10 +85,12 @@ def printTicketTemplate(importedTxt):
             elif (line.startswith("URL")):
                   temp = line.split("URL")
                   URL_Obj = temp[1].strip()
-            elif (line.startswith("Domain")):
-                  temp = re.split(r'\s+|\t',line)
+            elif (line.startswith("Domain (Impacted)")):
+                  temp = line.split("Domain (Impacted)",line)
+                  Domain_impacted = temp[1].strip()
+            elif (line.startswith("Domain (Origin)")):
+                  temp = line.split("Domain (Origin)",line)
                   Domain_origin = temp[1].strip()
-                  Domain_impacted = temp[2].strip()
             line = None
       
       output_template = [
