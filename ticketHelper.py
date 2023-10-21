@@ -1,12 +1,18 @@
+# Nathan Graham
+# Python 3.11.5
+
 import re
 import ticketObjClass
+
 
 def importTxtFile(fileLocation):
     with open(fileLocation, 'r') as file:
         importedTxt = file.read().splitlines()
     return importedTxt
 
-def printTicketTemplate(importedTxt):
+# Custom written parser for personal use case.
+
+def parseInputs(importedTxt):
       Alarm_Title = '-^--^--^--^--^--^--^--^--^--^-'
       Alarm_ID = '-^--^--^--^--^-'
       Date = '-^--^--^--^--^--^-'
@@ -43,7 +49,7 @@ def printTicketTemplate(importedTxt):
                               User_origin[temp[1]] =+ 1
                         if (temp[2].strip()!=''):
                               temp[2] = temp[2].strip()
-                              User_Agent[temp[1]] =+ 1
+                              User_impacted[temp[2]] =+ 1
             elif (line.startswith("Host") and not line.startswith("Host (I") and not line.startswith("Hostname")):
                   temp = line.split('\t')
                   if (temp[1].strip()!=''):
@@ -51,7 +57,7 @@ def printTicketTemplate(importedTxt):
                         Hosts_origin[temp[1]] =+ 1
                   if (temp[2].strip()!=''):
                         temp[2] = temp[2].strip()
-                        Hosts_impacted[temp[1]] =+ 1
+                        Hosts_impacted[temp[2]] =+ 1
             elif (line.startswith("TCP/UDP Port")):
                   temp = line.split("\t", )
                   if (temp[1].strip()!=''):
@@ -108,6 +114,8 @@ def printTicketTemplate(importedTxt):
                   temp[1] = temp[1].strip()
                   Domain_origin[temp[1]] =+ 1
 
+            # Applying parsed data to ticket template
+
             output_template = [
             f"[{Log_Count}] log(s) @ {Alarm_Title}",
             f"Alarm ID# : {Alarm_ID}",
@@ -131,9 +139,15 @@ def printTicketTemplate(importedTxt):
             f"User Agent : {User_Agent}",
             f"Log Source : {Log_Source}",
       ]
+            
+      return output_template
+
+def printTicketTemplate(output_template):
 
       formatted_output = "\n".join(output_template)
 
+      # Unused fields are discarded
+      
       with open("out.txt", "a") as f:
             for line in formatted_output.split('\n'):
                   if "DELETE_ME" not in line:
@@ -141,7 +155,8 @@ def printTicketTemplate(importedTxt):
 
 def main():
     importedTxt = importTxtFile('a')
-    printTicketTemplate(importedTxt)
+    formatted_output = parseInputs(importedTxt)
+    printTicketTemplate(formatted_output)
 
 if __name__ == '__main__':
     main()
