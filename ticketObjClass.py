@@ -6,25 +6,16 @@ class TicketObj:
         return self.data[key]
 
     def __setitem__(self, key, value):
-        if key in self.data:
-            self.data[key] += value
-        else:
-            self.data[key] = value
+        self.data[key] = self.data.get(key, 0) + value
 
     def __delitem__(self, key):
         del self.data[key]
 
     def __str__(self):
-        return str(self.data)
-    
-    def toString(self):
-        if self.data.__len__()== 0:
+        if not self.data:
             return 'DELETE_ME'
-        elif self.data.__len__()== 1:
+        elif len(self.data) == 1:
             varName, num = next(iter(self.data.items()))
-            if num == 1:
-                return varName
-            else:
-                return f'({num}) {varName}'
+            return varName if num == 1 else f'({num}) {varName}'
         else:
-            return '\n\t'+'\n\t'.join(f'({num}) {varName}' for varName, num in self.data.items())
+            return '\n\t' + '\n\t'.join(f'({num}) {varName}' for varName, num in self.data.items())

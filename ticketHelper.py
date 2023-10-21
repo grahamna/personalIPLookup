@@ -1,19 +1,10 @@
-# Nathan Graham
-# Python 3.11.5
-
 import re
 import ticketObjClass
-import ipLookup
-
-# Opens local file named temp.txt, then loads it into a str map obj (you can copy pasta from whatever and paste it, local string vars don't really work)
 
 def importTxtFile(fileLocation):
-      with open(fileLocation, 'r') as file:
-            importedTxt = file.read().splitlines()
-      file.close()
-      return importedTxt
-
-# Prints out template data populated with data from imported txt obj to res.txt
+    with open(fileLocation, 'r') as file:
+        importedTxt = file.read().splitlines()
+    return importedTxt
 
 def printTicketTemplate(importedTxt):
       Alarm_Title = '-^--^--^--^--^--^--^--^--^--^-'
@@ -38,7 +29,7 @@ def printTicketTemplate(importedTxt):
       User_Agent = ticketObjClass.TicketObj()
       Domain_origin = ticketObjClass.TicketObj()
       Domain_impacted = ticketObjClass.TicketObj()
-      
+
       for line in importedTxt:
             if (line.startswith("User") and not line.startswith("User I")):
                   if (line.startswith("User Agent")):
@@ -68,7 +59,7 @@ def printTicketTemplate(importedTxt):
                         Port_origin[temp[1]] =+ 1
                   if (temp[2].strip()!=''):
                         temp[2] = temp[2].strip()
-                        Port_impacted[temp[1]] =+ 1
+                        Port_impacted[temp[2]] =+ 1
             elif (line.startswith("Host (Impacted) KBytes Total")):
                   temp = line.split("Host (Impacted) KBytes Total", )
                   temp[1] = temp[1].strip()
@@ -116,76 +107,41 @@ def printTicketTemplate(importedTxt):
                   temp = line.split("Domain (Origin)")
                   temp[1] = temp[1].strip()
                   Domain_origin[temp[1]] =+ 1
-      
-      output_template = [
-        "[{Log_Count}] log(s) @ {Alarm_Title}",
-        "Alarm ID# : {Alarm_ID}",
-        "Date : {Date}",
-        "Host(s) origin : {Hosts_origin}",
-        "Host(s) impacted : {Hosts_impacted}",
-        "Common Event : {Common_Event}",
-        "User origin : {User_origin}",
-        "User impacted : {User_impacted}",
-        "MPE Rule Name : {MPE_Rule_Name}",
-        "Port origin : {Port_origin}",
-        "Port impacted : {Port_impacted}",
-        "Subject : {Subject}",
-        "Group : {Group}",
-        "Hash : {Hash}",
-        "URL : {URL_Obj}",
-        "Vendor ID : {Vendor_Message_ID}",
-        "Domain (origin) : {Domain_origin}",
-        "Domain (impacted) : {Domain_impacted}",
-        "Host (Impacted) KBytes Total : {Host_KBytes_Total}",
-        "User Agent : {User_Agent}",
-        "Log Source : {Log_Source}",
-    ]
 
-      formatted_output = "\n".join(output_template).format(
-            Log_Count=Log_Count,
-            Alarm_Title=Alarm_Title,
-            Alarm_ID=Alarm_ID,
-            Date=Date,
-            Hosts_origin=Hosts_origin.toString(),
-            Hosts_impacted=Hosts_impacted.toString(),
-            Common_Event=Common_Event.toString(), 
-            User_origin=User_origin.toString(), 
-            User_impacted=User_impacted.toString(),
-            MPE_Rule_Name=MPE_Rule_Name.toString(),
-            Port_origin=Port_origin.toString(), 
-            Port_impacted=Port_impacted.toString(),
-            Subject=Subject.toString(),
-            Group=Group.toString(),
-            Hash=Hash.toString(), 
-            URL_Obj=URL_Obj.toString(),
-            Vendor_Message_ID=Vendor_Message_ID.toString(), 
-            Domain_origin=Domain_origin.toString(), 
-            Domain_impacted=Domain_impacted.toString(),
-            Host_KBytes_Total=Host_KBytes_Total.toString(),
-            User_Agent=User_Agent.toString(), 
-            Log_Source=Log_Source.toString()
-      )
-      
-      final_output = re.split(r'\n(?!\t)', formatted_output)
+            output_template = [
+            f"[{Log_Count}] log(s) @ {Alarm_Title}",
+            f"Alarm ID# : {Alarm_ID}",
+            f"Date : {Date}",
+            f"Host(s) origin : {Hosts_origin}",
+            f"Host(s) impacted : {Hosts_impacted}",
+            f"Common Event : {Common_Event}",
+            f"User origin : {User_origin}",
+            f"User impacted : {User_impacted}",
+            f"MPE Rule Name : {MPE_Rule_Name}",
+            f"Port origin : {Port_origin}",
+            f"Port impacted : {Port_impacted}",
+            f"Subject : {Subject}",
+            f"Group : {Group}",
+            f"Hash : {Hash}",
+            f"URL : {URL_Obj}",
+            f"Vendor ID : {Vendor_Message_ID}",
+            f"Domain (origin) : {Domain_origin}",
+            f"Domain (impacted) : {Domain_impacted}",
+            f"Host (Impacted) KBytes Total : {Host_KBytes_Total}",
+            f"User Agent : {User_Agent}",
+            f"Log Source : {Log_Source}",
+      ]
+
+      formatted_output = "\n".join(output_template)
 
       with open("out.txt", "a") as f:
-            for line in final_output:
-                  if line.__contains__("DELETE_ME"):
-                        line = None
-                  else:
-                        f.write(line+'\n')
-      
-      # if (Direction == "Outbound"):
-      #       print(Direction)
-      #       ipLookup.lookup(Hosts_impacted)
-      # elif (Direction == "External"):
-      #       print(Direction)
-      #       ipLookup.lookup(Hosts_origin)
-      
-def main():
-    importedTxt = importTxtFile('temp.txt')
-    printTicketTemplate(importedTxt)
+            for line in formatted_output.split('\n'):
+                  if "DELETE_ME" not in line:
+                        f.write(line + '\n')
 
+def main():
+    importedTxt = importTxtFile('a')
+    printTicketTemplate(importedTxt)
 
 if __name__ == '__main__':
     main()
