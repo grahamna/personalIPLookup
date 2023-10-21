@@ -3,17 +3,19 @@
 
 import re
 import ticketObjClass
-
+import os
 
 def importTxtFile(fileLocation):
-    with open(fileLocation, 'r') as file:
-        importedTxt = file.read().splitlines()
-    return importedTxt
+      with open(fileLocation, 'r') as file:
+            importedTxt = file.read().splitlines()
+            file.close()
+      
+      return importedTxt
 
 # Custom written parser for personal use case.
 
 def parseInputs(importedTxt):
-      Alarm_Title = '-^--^--^--^--^--^--^--^--^--^-'
+      alarmTitle = '-^--^--^--^--^--^--^--^--^--^-'
       Alarm_ID = '-^--^--^--^--^-'
       Date = '-^--^--^--^--^--^-'
       User_origin = ticketObjClass.TicketObj()
@@ -116,8 +118,8 @@ def parseInputs(importedTxt):
 
             # Applying parsed data to ticket template
 
-            output_template = [
-            f"[{Log_Count}] log(s) @ {Alarm_Title}",
+            outputTemplate = [
+            f"[{Log_Count}] log(s) @ {alarmTitle}",
             f"Alarm ID# : {Alarm_ID}",
             f"Date : {Date}",
             f"Host(s) origin : {Hosts_origin}",
@@ -140,23 +142,30 @@ def parseInputs(importedTxt):
             f"Log Source : {Log_Source}",
       ]
             
-      return output_template
+      return outputTemplate
 
-def printTicketTemplate(output_template):
+def printTicketTemplate(outputTemplate, inputLocation, outputLocation):
 
-      formatted_output = "\n".join(output_template)
+      formatted_output = "\n".join(outputTemplate)
 
       # Unused fields are discarded
       
-      with open("out.txt", "a") as f:
+      with open(outputLocation, "a") as f:
             for line in formatted_output.split('\n'):
                   if "DELETE_ME" not in line:
                         f.write(line + '\n')
+      
+      # Optional - Deleting the input file and remaking a blank fresh one
+      with open(inputLocation, "w") as file:
+            file.close()
 
 def main():
-    importedTxt = importTxtFile('a')
-    formatted_output = parseInputs(importedTxt)
-    printTicketTemplate(formatted_output)
+      dirname = os.path.dirname(__file__)
+      input = os.path.join(dirname, '../a')
+      output = os.path.join(dirname, '../out.txt')
+      importedTxt = importTxtFile(input)
+      formattedOutput = parseInputs(importedTxt)
+      printTicketTemplate(formattedOutput, input, output)
 
 if __name__ == '__main__':
-    main()
+      main()
