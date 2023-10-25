@@ -45,7 +45,7 @@ def parseInputs(importedTxt):
                         temp[1] = temp[1].strip()
                         User_Agent[temp[1]] =+ 1
                   else:
-                        temp = re.split(r'\s+|\t',line)
+                        temp = re.split(r'\t',line)
                         if (temp[1].strip()!=''):
                               temp[1] = temp[1].strip()
                               User_origin[temp[1]] =+ 1

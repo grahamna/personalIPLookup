@@ -31,7 +31,7 @@ def lookup(ipAddress):
 
 def main():
     while True:
-        ipAddress = input("Q to exit | Enter IP\n   ==>")
+        ipAddress = input("Q to exit | Enter IP\n   ==> ")
         exitStatement = "q"
         if ipAddress == exitStatement:
             print("exiting")
