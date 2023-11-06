@@ -3,8 +3,10 @@
 # Python 3.11.5
 
 import re
-import ticketObjClass
 import os
+import keyboard
+import ticketObjClass
+import pyperclip
 
 def importTxtFile(fileLocation):
       with open(fileLocation, 'r') as file:
@@ -141,6 +143,7 @@ def parseInputs(importedTxt):
             f"Host (Impacted) KBytes Total : {Host_KBytes_Total}",
             f"User Agent : {User_Agent}",
             f"Log Source : {Log_Source}",
+            f'\n\n========================================================\n\n'
       ]
             
       return outputTemplate
@@ -149,25 +152,54 @@ def printTicketTemplate(outputTemplate, inputLocation, outputLocation):
 
       formatted_output = "\n".join(outputTemplate)
 
+      res_output = []
+      
       # Unused fields are discarded
       
-      with open(outputLocation, "a") as f:
+      with open(outputLocation, "w") as f:
             for line in formatted_output.split('\n'):
                   if "DELETE_ME" not in line:
                         f.write(line + '\n')
-            f.write('\n\n========================================================\n\n')
+                        res_output.append(line)
+                        
+      # Optional - Send formatted_output directly to user's clipboard
+      final_output = "\n".join(res_output)
+      pyperclip.copy(final_output)
       
       # Optional - Deleting the input file and remaking a blank fresh one
       with open(inputLocation, "w") as file:
             file.close()
 
-def main():
+def key_event(e):
       dirname = os.path.dirname(__file__)
-      input = os.path.join(dirname, '../zZz')
-      output = os.path.join(dirname, '../zOut.txt')
-      importedTxt = importTxtFile(input)
-      formattedOutput = parseInputs(importedTxt)
-      printTicketTemplate(formattedOutput, input, output)
+      fInput = os.path.join(dirname, '../zZz')
+      fOutput = os.path.join(dirname, '../zOut.txt')
+
+      # Check if the printTicketCombo sequence has been pressed
+      if e.event_type == keyboard.KEY_DOWN and e.name == 'f10' and keyboard.is_pressed('alt') and keyboard.is_pressed('ctrl'):
+            print("printTicketCombo")
+            importedTxt = importTxtFile(fInput)
+            formattedOutput = parseInputs(importedTxt)
+            printTicketTemplate(formattedOutput, fInput, fOutput)
+            print("Done")
+      
+      elif e.event_type == keyboard.KEY_DOWN and e.name == 'f9' and keyboard.is_pressed('alt') and keyboard.is_pressed('ctrl'):
+            print("captureClipBoardCombo")
+            clipboard_content = pyperclip.paste()
+            with open(fInput, 'a') as file:
+                  file.write(clipboard_content)
+            print("Done")
+
+def main():
+
+      keyboard.hook(key_event)
+      print("ticketHelper is listening...")
+      
+      try:
+            while(True):
+                  keyboard.wait()
+      except KeyboardInterrupt:
+            print("ticketHelper exited gracefully")
 
 if __name__ == '__main__':
       main()
