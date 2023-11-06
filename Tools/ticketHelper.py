@@ -1,4 +1,4 @@
-# Nathan Graham - personal use
+# Nathan Graham - Personal Use
 # This application was developed in my own free time without company resources
 # Python 3.11.5
 
@@ -155,6 +155,7 @@ def printTicketTemplate(outputTemplate, inputLocation, outputLocation):
             for line in formatted_output.split('\n'):
                   if "DELETE_ME" not in line:
                         f.write(line + '\n')
+            f.write('\n\n========================================================\n\n')
       
       # Optional - Deleting the input file and remaking a blank fresh one
       with open(inputLocation, "w") as file:
@@ -162,8 +163,8 @@ def printTicketTemplate(outputTemplate, inputLocation, outputLocation):
 
 def main():
       dirname = os.path.dirname(__file__)
-      input = os.path.join(dirname, '../a')
-      output = os.path.join(dirname, '../out.txt')
+      input = os.path.join(dirname, '../zZz')
+      output = os.path.join(dirname, '../zOut.txt')
       importedTxt = importTxtFile(input)
       formattedOutput = parseInputs(importedTxt)
       printTicketTemplate(formattedOutput, input, output)
