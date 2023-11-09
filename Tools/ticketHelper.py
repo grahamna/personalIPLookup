@@ -121,30 +121,7 @@ def parseInputs(importedTxt):
 
             # Applying parsed data to ticket template
 
-            outputTemplate = [
-            f"[{Log_Count}] log(s) @ {alarmTitle}",
-            f"Alarm ID# : {Alarm_ID}",
-            f"Date : {Date}",
-            f"Host(s) origin : {Hosts_origin}",
-            f"Host(s) impacted : {Hosts_impacted}",
-            f"Common Event : {Common_Event}",
-            f"User origin : {User_origin}",
-            f"User impacted : {User_impacted}",
-            f"MPE Rule Name : {MPE_Rule_Name}",
-            f"Port origin : {Port_origin}",
-            f"Port impacted : {Port_impacted}",
-            f"Subject : {Subject}",
-            f"Group : {Group}",
-            f"Hash : {Hash}",
-            f"URL : {URL_Obj}",
-            f"Vendor ID : {Vendor_Message_ID}",
-            f"Domain (origin) : {Domain_origin}",
-            f"Domain (impacted) : {Domain_impacted}",
-            f"Host (Impacted) KBytes Total : {Host_KBytes_Total}",
-            f"User Agent : {User_Agent}",
-            f"Log Source : {Log_Source}",
-            f'\n\n========================================================\n\n'
-      ]
+            outputTemplate = [] # Is secret, I guess?
             
       return outputTemplate
 
