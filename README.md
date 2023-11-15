@@ -8,7 +8,8 @@
  Before running the script, ensure that you have a compatible web browser installed and the path to the browser executable is correctly specified in the browser variable at the top of the script. Additionally, ensure that the links used for IP lookup are accurate and up to date.
 
 ## Usage
- To use the IP Lookup Tool, simply run the script and enter an IP address when prompted. The tool will automatically open new tabs in the web browser for each of the provided links. To exit the tool, enter "q" when prompted for an IP address.
+ To use the IP Lookup Tool, simply run the script and enter an IP address when prompted. The tool will automatically open new tabs in the web browser for each of the provided links. To exit the tool, enter "q" when prompted for an IP address.  
+ This program now allows for querying the API available at VirusTotal, AlienVault, AbuseIPDB, and Shodan.io. You can press ENTER again (input with no IP) to manually bring up the previously searched IP into the browser.
 
 ## Dependencies
  webbrowser,
@@ -22,13 +23,9 @@
  This script was developed and tested on Windows 10 using Python 3.11.5. It may require modifications to be compatible with other operating systems or Python versions.
  ------------------------------------
  # **personalTicketHelper**
- This Python script printTicketTemplate.py is used to extract and print data from a JSON or txt file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format. (Feel free to modify to your personal use case.)
-
+ This Python script printTicketTemplate.py is used to extract and print data from a JSON / txt file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format. (Feel free to modify to your personal use case.)
+  
  This now also uses a custom class to facilitate formatting the edge cases of ticket generation.
-
-## Requirements
- This script requires Python 3 and the json library to be installed.
- This script now also requires the re library, which should come pre-installed with Python.
 
 ## Usage
  Ensure that temp.json (file is now called a) is present in the same directory as the script.
