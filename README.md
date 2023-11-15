@@ -1,5 +1,5 @@
 # **Disclaimer**
- This project has been worked on in my own free time, and not with company resources. Logrhythm provides public documentation as to the format of their data. (https://docs.logrhythm.com/?l=en)
+ This project has been worked on in my own free time, and not with company resources. Logrhythm provides public documentation as to the format of their data and the field names. (https://docs.logrhythm.com/?l=en) Specifically (https://docs.logrhythm.com/lrsiem/7.12.0/lists-in-the-client-console)
 
 # **personalIPLookUp**
  This Python script allows users to quickly lookup an IP address across multiple websites. It utilizes the webbrowser and time modules to open new tabs in a web browser for each of the provided links.

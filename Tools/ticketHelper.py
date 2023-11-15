@@ -18,108 +18,111 @@ def importTxtFile(fileLocation):
 # Custom written parser for personal use case.
 
 def parseInputs(importedTxt):
-      alarmTitle = '-^--^--^--^--^--^--^--^--^--^-'
-      Alarm_ID = '-^--^--^--^--^-'
-      Date = '-^--^--^--^--^--^-'
-      User_origin = ticketObjClass.TicketObj()
-      User_impacted = ticketObjClass.TicketObj()
-      Hosts_origin = ticketObjClass.TicketObj()
-      Hosts_impacted = ticketObjClass.TicketObj()
-      Port_origin = ticketObjClass.TicketObj()
-      Port_impacted = ticketObjClass.TicketObj()
-      Host_KBytes_Total = ticketObjClass.TicketObj()
-      Log_Count = 0
-      Common_Event = ticketObjClass.TicketObj()
-      Group = ticketObjClass.TicketObj()
-      Log_Source = ticketObjClass.TicketObj()
-      MPE_Rule_Name = ticketObjClass.TicketObj()
-      Subject = ticketObjClass.TicketObj()
-      Vendor_Message_ID = ticketObjClass.TicketObj()
-      Hash = ticketObjClass.TicketObj()
-      URL_Obj = ticketObjClass.TicketObj()
-      User_Agent = ticketObjClass.TicketObj()
-      Domain_origin = ticketObjClass.TicketObj()
-      Domain_impacted = ticketObjClass.TicketObj()
+      
+      # Fields based off of (https://docs.logrhythm.com/lrsiem/7.12.0/lists-in-the-client-console)
+      
+      a = '-^--^--^--^--^--^--^--^--^--^-'
+      b = '-^--^--^--^--^-'
+      c = '-^--^--^--^--^--^-'
+      d = ticketObjClass.TicketObj()
+      e = ticketObjClass.TicketObj()
+      f = ticketObjClass.TicketObj()
+      g = ticketObjClass.TicketObj()
+      h = ticketObjClass.TicketObj()
+      i = ticketObjClass.TicketObj()
+      j = ticketObjClass.TicketObj()
+      k = 0
+      l = ticketObjClass.TicketObj()
+      m = ticketObjClass.TicketObj()
+      n = ticketObjClass.TicketObj()
+      o = ticketObjClass.TicketObj()
+      p = ticketObjClass.TicketObj()
+      q = ticketObjClass.TicketObj()
+      r = ticketObjClass.TicketObj()
+      s = ticketObjClass.TicketObj()
+      t = ticketObjClass.TicketObj()
+      u = ticketObjClass.TicketObj()
+      v = ticketObjClass.TicketObj()
 
       for line in importedTxt:
             if (line.startswith("User") and not line.startswith("User I")):
                   if (line.startswith("User Agent")):
                         temp = line.split("User Agent")
                         temp[1] = temp[1].strip()
-                        User_Agent[temp[1]] =+ 1
+                        t[temp[1]] =+ 1
                   else:
                         temp = re.split(r'\t',line)
                         if (temp[1].strip()!=''):
                               temp[1] = temp[1].strip()
-                              User_origin[temp[1]] =+ 1
+                              d[temp[1]] =+ 1
                         if (temp[2].strip()!=''):
                               temp[2] = temp[2].strip()
-                              User_impacted[temp[2]] =+ 1
+                              e[temp[2]] =+ 1
             elif (line.startswith("Host") and not line.startswith("Host (I") and not line.startswith("Hostname")):
                   temp = line.split('\t')
                   if (temp[1].strip()!=''):
                         temp[1] = temp[1].strip()
-                        Hosts_origin[temp[1]] =+ 1
+                        f[temp[1]] =+ 1
                   if (temp[2].strip()!=''):
                         temp[2] = temp[2].strip()
-                        Hosts_impacted[temp[2]] =+ 1
+                        g[temp[2]] =+ 1
             elif (line.startswith("TCP/UDP Port")):
                   temp = line.split("\t", )
                   if (temp[1].strip()!=''):
                         temp[1] = temp[1].strip()
-                        Port_origin[temp[1]] =+ 1
+                        h[temp[1]] =+ 1
                   if (temp[2].strip()!=''):
                         temp[2] = temp[2].strip()
-                        Port_impacted[temp[2]] =+ 1
+                        i[temp[2]] =+ 1
             elif (line.startswith("Host (Impacted) KBytes Total")):
                   temp = line.split("Host (Impacted) KBytes Total", )
                   temp[1] = temp[1].strip()
-                  Host_KBytes_Total[temp[1]] =+ 1
+                  j[temp[1]] =+ 1
             elif (line.startswith("Log Count")):
                   temp = line.split("Log Count", )
-                  Log_Count = Log_Count+1
+                  k = k+1
             elif (line.startswith("Common Event")):
                   temp = line.split("Common Event", )
                   temp[1] = temp[1].strip()
-                  Common_Event[temp[1]] =+ 1
+                  l[temp[1]] =+ 1
             elif (line.startswith("Group")):
                   temp = line.split("Group", )
                   temp[1] = temp[1].strip()
-                  Group[temp[1]] =+ 1
+                  m[temp[1]] =+ 1
             elif (line.startswith("Log Source") and not line.startswith("Log Source ")):
                   temp = line.split("Log Source", )
                   temp[1] = temp[1].strip()
-                  Log_Source[temp[1]] =+ 1
+                  n[temp[1]] =+ 1
             elif (line.startswith("MPE Rule Name")):
                   temp = line.split("MPE Rule Name", )
                   temp[1] = temp[1].strip()
-                  MPE_Rule_Name[temp[1]] =+ 1
+                  o[temp[1]] =+ 1
             elif (line.startswith("Subject")):
                   temp = line.split("Subject", )
                   temp[1] = temp[1].strip()
-                  Subject[temp[1]] =+ 1
+                  p[temp[1]] =+ 1
             elif (line.startswith("Vendor Message ID")):
                   temp = line.split("Vendor Message ID")
                   temp[1] = temp[1].strip()
-                  Vendor_Message_ID[temp[1]] =+ 1
+                  q[temp[1]] =+ 1
             elif (line.startswith("Hash")):
                   temp = line.split("Hash")
                   temp[1] = temp[1].strip()
-                  Hash[temp[1]] =+ 1
+                  r[temp[1]] =+ 1
             elif (line.startswith("URL")):
                   temp = line.split("URL")
                   temp[1] = temp[1].strip()
-                  URL_Obj[temp[1]] =+ 1
+                  s[temp[1]] =+ 1
             elif (line.startswith("Domain (Impacted)")):
                   temp = line.split("Domain (Impacted)")
                   temp[1] = temp[1].strip()
-                  Domain_impacted[temp[1]] =+ 1
+                  v[temp[1]] =+ 1
             elif (line.startswith("Domain (Origin)")):
                   temp = line.split("Domain (Origin)")
                   temp[1] = temp[1].strip()
-                  Domain_origin[temp[1]] =+ 1
+                  u[temp[1]] =+ 1
 
-            # Applying parsed data to ticket template
+            # Applying parsed data to supplied ticket template from 
 
             outputTemplate = [] # Is secret, I guess?
             
@@ -152,7 +155,7 @@ def key_event(e):
       fInput = os.path.join(dirname, '../zZz')
       fOutput = os.path.join(dirname, '../zOut.txt')
 
-      # Check if the printTicketCombo sequence has been pressed
+      # Check if the printTicketCombo sequence has been pressed (ex: ctrl, alt, f10)
       if e.event_type == keyboard.KEY_DOWN and e.name == 'f10' and keyboard.is_pressed('alt') and keyboard.is_pressed('ctrl'):
             print("printTicketCombo")
             importedTxt = importTxtFile(fInput)
@@ -160,6 +163,7 @@ def key_event(e):
             printTicketTemplate(formattedOutput, fInput, fOutput)
             print("Done")
       
+      # Check if the captureClipBoardCombo sequence has been pressed (ex: ctrl, alt f9)
       elif e.event_type == keyboard.KEY_DOWN and e.name == 'f9' and keyboard.is_pressed('alt') and keyboard.is_pressed('ctrl'):
             print("captureClipBoardCombo")
             clipboard_content = pyperclip.paste()
