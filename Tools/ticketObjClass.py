@@ -23,4 +23,4 @@ class TicketObj:
         
         else:
             # case for multiple params within dict
-            return '\n\t' + '\n\t'.join(f'({num}) {varName}' for varName, num in self.data.items())
+            return '\n\t\t' + '\n\t\t'.join(f'({num}) {varName}' for varName, num in self.data.items())
