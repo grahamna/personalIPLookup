@@ -20,7 +20,7 @@
  time
  
 ## Compatibility
- This script was developed and tested on Windows 10 using Python 3.11.5. It may require modifications to be compatible with other operating systems or Python versions.
+ This script was developed and tested on Windows 11 using Python 3.11.5. It may require modifications to be compatible with other operating systems or Python versions.
  ------------------------------------
  # **personalTicketHelper**
  This Python script printTicketTemplate.py is used to extract and print data from a JSON / txt file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format. (Feel free to modify to your personal use case.)
@@ -28,11 +28,13 @@
  This now also uses a custom class to facilitate formatting the edge cases of ticket generation.
 
 ## Usage
- Ensure that temp.json (file is now called a) is present in the same directory as the script.
+ Ensure that temp.json (file is now called zZz) is present in the directory one level outside the script.
  Run the script using the command python printTicketTemplate.py
  The script will extract the required data from temp.json (a) and print it in the specified format.
 
  The new version of the script is tailored to a unique input. (Basically I wrote my own parser to my own requirements.) Feel free to modify to your personal use case.
+
+ The program now uses user's clipboard as a temp memory / file location, bridging the two functions of the program.
 
 ## Functionality
  This script includes two functions:
@@ -49,7 +51,6 @@
  re,
  os,
  keyboard,
- ticketObjClass,
  pyperclip,
 
 ## Example
