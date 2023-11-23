@@ -11,14 +11,16 @@ import pyperclip
 
 # Path to browser executable
 browser = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe %s"
+
+# These should be your API keys for each service
+
 virusTotalAPIKey = []
+
 abuseIPDBKey = []
+
 alienVaultAPIKey = []
+
 shodanAPIKey = []
-
-# List of Links used for IP lookup
-
-links = ["https://talosintelligence.com/reputation_center/lookup?search=", "https://otx.alienvault.com/indicator/ip/", "https://www.shodan.io/host/","https://www.abuseipdb.com/check/","https://www.virustotal.com/gui/ip-address/",]
 
 # function to iterate over links, opening new web browser page and new tabs with the passed in ip address. Sleep is required for correct tab order.
 
@@ -132,8 +134,8 @@ def lookupHeadless(ipAddress, num):
             claimedISP = claimedISP+"/"+data.get('country')
             count = count+1
         count = count + (data.get('last_analysis_stats').get('malicious') * 2.75) - (data.get('reputation')/10)
-        if (count < 0):
-            count = 0
+        if (count < -2):
+            count = -2
         
     if responses['alienvault'].status_code == 200:
         total = total+1
@@ -173,35 +175,21 @@ def lookupHeadless(ipAddress, num):
     
     return count, outString
 
+
+def isPrivateIP(ip):
+    # Class A: 10.0.0.0 to 10.255.255.255,
+    # Class B: 172.16.0.0 to 172.31.255.255,
+    # Class C: 192.168.0.0 to 192.168.255.255
+    
+    octets = ip.split('.')
+    
+    # Check if the IP address is in any of the private IP address ranges
+    if octets[0] == '10' or (octets[0] == '172' and 16 <= int(octets[1]) <= 31) or (octets[0] == '192' and octets[1] == '168'):
+        return True
+    return False
+
+
 def main():
-    #  For debugging using file as input for searching IPs
-    # 
-    # temp = []
-    # with open('test.txt', 'r') as f:
-    #     temp = f.read().splitlines()
-    # f.close()
-    # num = -1
-    # with open('res.txt', 'w')as wr:
-    #     for strings in temp:
-    #         if (num >=7):
-    #             num = 0
-    #         else:
-    #             num = num + 1
-    #         ipAddress = strings
-    #         print(f"{num} Looking up IP via API: {ipAddress}")
-    #         count, outString = lookupHeadless(ipAddress, num)
-    #         time.sleep(2)
-    #         print('\nCount : '+str(count)+'\n')
-    #         if count > 3.5:
-    #             output = "Malicious activity suspected / reported"
-    #         elif count <=3.5 and count > 1:
-    #             output = "Insufficient evidence of malicious activity reported"
-    #         else:
-    #             output = "No malicious activity suspected / reported"
-    #         res = outString + " - " + output
-    #         print(res)
-    #         wr.write(res+'\n')
-    # wr.close()
     
     num = -1
     ipAddress = ''
@@ -222,19 +210,25 @@ def main():
                 num = 0
             else:
                 num = num + 1
-            ipAddress = intext
-            print("Looking up IP via API: " + ipAddress)
-            count, outString = lookupHeadless(ipAddress, num)
-            print('\nCount : '+str(count)+'\n')
-            if count > 2.5:
-                output = "Malicious activity suspected / reported"
-            elif count <= 2.5 and count > 0.9:
-                output = "Insufficient evidence of malicious activity reported"
+                
+            if isPrivateIP(intext):
+                res='Private IP address detected'
+                
             else:
-                output = "No malicious activity suspected / reported"
-            res = outString + " - " + output
+                ipAddress = intext
+                print("Looking up IP via API: " + ipAddress)
+                count, outString = lookupHeadless(ipAddress, num)
+                print('\nCount : '+str(count)+'\n')
+                if count > 2.5:
+                    output = "Malicious activity suspected / reported"
+                elif count <= 2.5 and count > 0.9:
+                    output = "Insufficient evidence of malicious activity reported"
+                else:
+                    output = "No malicious activity suspected / reported"
+                res = outString + " - " + output
             print ('\n'+res)
             pyperclip.copy(res)
+
 
 
 if __name__ == '__main__':

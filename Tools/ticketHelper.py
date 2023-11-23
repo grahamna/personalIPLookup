@@ -154,7 +154,7 @@ def parseInputs(importedTxt, fInput):
             f"\tWith Domain : {Domain_impacted}",
             f"\n"
             f"Affecting Subject : {Subject}",
-            f"Of Group ID: {Group}",
+            f"Pertaining to Group ID: {Group}",
             f"Hash of File : {Hash}",
             f"URL Reference : {URL_Obj}",
             f'\n\n========================================================\n\n'
