@@ -188,47 +188,49 @@ def isPrivateIP(ip):
         return True
     return False
 
+def processIp(ip, num):
+    if isPrivateIP(ip):
+        print('\nPrivate IP address detected')
+    else:
+        print("Looking up IP via API: " + ip)
+        count, outString = lookupHeadless(ip, num)
+        print('\nCount : ' + str(count) + '\n')
+        if count > 2.5:
+            output = "Malicious activity suspected / reported"
+        elif 0.9 < count <= 2.5:
+            output = "Insufficient evidence of malicious activity reported"
+        else:
+            output = "No malicious activity suspected / reported"
+        result = outString + " - " + output
+        print('\n' + result)
+        pyperclip.copy(result)
+
 
 def main():
-    
     num = -1
     ipAddress = ''
     intext = ''
+    
     while True:
         intext = input("\nQ to exit | Enter IP\n   ==> ")
         exitStatement = "q"
         headLookupKey = ''
+
         if intext == exitStatement:
             print("exiting")
             exit()
         elif intext == headLookupKey and ipAddress != '':
-            print("Manual Look Up: "+ipAddress)
+            print("Manual Look Up: " + ipAddress)
             lookupHead(ipAddress)
             time.sleep(1.75)
         else:
-            if (num >=7):
+            if num >= 7:
                 num = 0
             else:
                 num = num + 1
-                
-            if isPrivateIP(intext):
-                res='Private IP address detected'
-                
-            else:
-                ipAddress = intext
-                print("Looking up IP via API: " + ipAddress)
-                count, outString = lookupHeadless(ipAddress, num)
-                print('\nCount : '+str(count)+'\n')
-                if count > 2.5:
-                    output = "Malicious activity suspected / reported"
-                elif count <= 2.5 and count > 0.9:
-                    output = "Insufficient evidence of malicious activity reported"
-                else:
-                    output = "No malicious activity suspected / reported"
-                res = outString + " - " + output
-            print ('\n'+res)
-            pyperclip.copy(res)
 
+            ipAddress = intext
+            processIp(ipAddress, num)
 
 
 if __name__ == '__main__':
