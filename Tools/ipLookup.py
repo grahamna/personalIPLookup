@@ -164,14 +164,18 @@ def lookupHeadless(ipAddress, num):
         else:
             count = count -.25
     
-    count = count / total
-    outString = ''
-    if claimedISP is not None or claimedISP != '':
-        outString = claimedISP
-    if claimedUsageType is not None or claimedUsageType != '':
-        outString = claimedISP + ' ['+claimedUsageType+']' 
-    if claimedCountry is not None or claimedCountry != '':    
-        outString = outString + ', ('+claimedCountry+')'
+    if (total != 0):
+        outString = ''
+        count = count / total
+        if claimedISP is not None or claimedISP != '':
+            outString = claimedISP
+        if claimedUsageType is not None or claimedUsageType != '':
+            outString = claimedISP + ' ['+claimedUsageType+']' 
+        if claimedCountry is not None or claimedCountry != '':    
+            outString = outString + ', ('+claimedCountry+')'
+    
+    else:
+        outString = 'Unknown IP Address'
     
     return count, outString
 
@@ -188,7 +192,7 @@ def isPrivateIP(ip):
         return True
     return False
 
-def processIp(ip, num):
+def processIp(ip, num, out):
     if isPrivateIP(ip):
         print('\nPrivate IP address detected')
     else:
@@ -198,12 +202,15 @@ def processIp(ip, num):
         if count > 2.5:
             output = "Malicious activity suspected / reported"
         elif 0.9 < count <= 2.5:
-            output = "Insufficient evidence of malicious activity reported"
+            output = "Inconclusive evidence of malicious activity suspected / reported"
         else:
             output = "No malicious activity suspected / reported"
         result = outString + " - " + output
-        print('\n' + result)
-        pyperclip.copy(result)
+        if (out == False):
+            print('\n' + result)
+            pyperclip.copy(result)
+        else:
+            return result
 
 
 def main():
@@ -217,7 +224,7 @@ def main():
         headLookupKey = ''
 
         if intext == exitStatement:
-            print("exiting")
+            print("exiting...")
             exit()
         elif intext == headLookupKey and ipAddress != '':
             print("Manual Look Up: " + ipAddress)
@@ -230,7 +237,7 @@ def main():
                 num = num + 1
 
             ipAddress = intext
-            processIp(ipAddress, num)
+            processIp(ipAddress, num, False)
 
 
 if __name__ == '__main__':

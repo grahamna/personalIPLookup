@@ -42,7 +42,7 @@ def parseInputs(importedTxt, fInput):
       Domain_origin = ticketObjClass.TicketObj()
       Subject = ticketObjClass.TicketObj()
       Group = ticketObjClass.TicketObj()
-      Hash = ticketObjClass.TicketObj()
+      Hash_File = ticketObjClass.TicketObj()
       URL_Obj = ticketObjClass.TicketObj()
 
       try:
@@ -110,7 +110,7 @@ def parseInputs(importedTxt, fInput):
                   elif (line.startswith("Hash")):
                         temp = line.split("Hash")
                         temp[1] = temp[1].strip()
-                        Hash[temp[1]] =+ 1
+                        Hash_File[temp[1]] =+ 1
                   elif (line.startswith("URL")):
                         temp = line.split("URL")
                         temp[1] = temp[1].strip()
@@ -155,7 +155,7 @@ def parseInputs(importedTxt, fInput):
             f"\n"
             f"Affecting Subject : {Subject}",
             f"Pertaining to Group ID: {Group}",
-            f"Hash of File : {Hash}",
+            f"Hash of File : {Hash_File}",
             f"URL Reference : {URL_Obj}",
             f'\n\n========================================================\n\n'
       ]
