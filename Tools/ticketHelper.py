@@ -26,6 +26,8 @@ def parseInputs(importedTxt, fInput):
       Alarm_ID = '-^--^--^--^--^-'
       Date = '-^--^--^--^--^--^-'
       alarmTitle = '-^--^--^--^--^--^--^--^--^--^-'
+      IP_Address_From = ticketObjClass.IpTicketObj()
+      IP_Address_To = ticketObjClass.IpTicketObj()
       Log_Source = ticketObjClass.TicketObj()
       Common_Event = ticketObjClass.TicketObj()
       MPE_Rule_Name = ticketObjClass.TicketObj()
@@ -123,12 +125,19 @@ def parseInputs(importedTxt, fInput):
                         temp = line.split("Domain (Origin)")
                         temp[1] = temp[1].strip()
                         Domain_origin[temp[1]] =+ 1
-                        
+                  elif (line.startswith("IP Address")):
+                        temp = re.split(r'\t',line)
+                        if (temp[1].strip()!=''):
+                              temp[1] = temp[1].strip()
+                              IP_Address_From[temp[1]] =+ 1
+                        if (temp[2].strip()!=''):
+                              temp[2] = temp[2].strip()
+                              IP_Address_To[temp[2]] =+ 1
+                  
       except:
             with open(fInput, "w") as file:
                   file.close()
             print("Parse failed, fileInput Cleared")
-            
             
             # Applying parsed data to supplied ticket template from 
 
@@ -143,6 +152,7 @@ def parseInputs(importedTxt, fInput):
             f"\n"
             f"From : {Hosts_origin}",
             f"\tUser : {User_origin}",
+            f"\tUsing IP : {IP_Address_From}",
             f"\tUsing Port : {Port_origin}",
             f"\tWith Domain : {Domain_origin}",
             f"\tUsing User Agent : {User_Agent}",
@@ -150,6 +160,7 @@ def parseInputs(importedTxt, fInput):
             f"\n"
             f"To : {Hosts_impacted}",
             f"\tUser : {User_impacted}",
+            f"\tUsing IP : {IP_Address_To}",
             f"\tUsing Port : {Port_impacted}",
             f"\tWith Domain : {Domain_impacted}",
             f"\n"
