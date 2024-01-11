@@ -52,7 +52,7 @@ class IpTicketObj(TicketObj):
             res = ''
             for varName, num in self.data.items():
                 rand = random.randint(0,7)
-                ipOut = ipLookup.processIp(varName, rand, True)
+                ipOut = ipLookup.processIp(None, varName, rand, True)
                 if ipOut is not None:
                     res = res + (f"\n\t\t({num}) {varName} - {ipOut}")
                 else:

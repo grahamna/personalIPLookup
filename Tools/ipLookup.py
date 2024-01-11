@@ -4,11 +4,14 @@
 
 import time
 import webbrowser
+import os
 from ipwhois import IPWhois
 import requests
 import json
 import threading
 import pyperclip
+import csv
+from datetime import datetime
 
 # Path to browser executable
 browser = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe %s"
@@ -22,6 +25,48 @@ abuseIPDBKey = []
 alienVaultAPIKey = []
 
 shodanAPIKey = []
+
+
+class IPDb:
+    def __init__(self, file):
+        self.ipResultsDb = {}
+        self.loadFromDatabase(file)
+
+    def saveIpResults(self, ip, outString, output):
+        timestamp = datetime.now()
+        self.ipResultsDb[ip] = {'ipString': outString, 'output': output, 'timestamp': timestamp}
+
+    def updateIpResults(self, ip, outString, output):
+        if ip in self.ipResultsDb:
+            timestamp = datetime.now()
+            self.ipResultsDb[ip] = {'ipString': outString, 'output': output, 'timestamp': timestamp}
+
+    def loadFromDatabase(self, file):
+        try:
+            with open(file, 'r') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    ip = row['ip']
+                    outString = row['ipString']
+                    output = row['output']
+                    timestamp = datetime.strptime(row['timestamp'], '%m/%d/%Y %H:%M:%S.%f')
+                    self.ipResultsDb[ip] = {'ipString': outString, 'output': output, 'timestamp': timestamp}
+        except FileNotFoundError:
+            print("DB file not found, blank ipResultObj ref")
+            pass
+
+    def writeToFile(self, file):
+        with open(file, 'w', newline='') as csvfile:
+            fieldnames = ['ip', 'ipString', 'output', 'timestamp']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            # Write header if the file is empty
+            if csvfile.tell() == 0:
+                writer.writeheader()
+
+            # Write all records to the CSV file
+            for ip, data in self.ipResultsDb.items():
+                writer.writerow({'ip': ip, 'ipString': data['ipString'], 'output': data['output'],'timestamp': data['timestamp'].strftime('%m/%d/%Y %H:%M:%S.%f')})
 
 # function to iterate over links, opening new web browser page and new tabs with the passed in ip address. Sleep is required for correct tab order.
 
@@ -217,9 +262,22 @@ def isPrivateIP(ip):
         return True
     return False
 
-def processIp(ip, num, out):
+
+def processIp(IPDb, ip, num, out):
+    if (IPDb is None):
+        dirname = os.path.dirname(__file__)
+        dbFile = os.path.join(dirname, '../ipDb.csv')
+        IPDb = IPDb(dbFile)
+    
     if isPrivateIP(ip):
         print('\nPrivate IP address detected')
+        
+    elif IPDb.ipResultsDb.get(ip) and (datetime.now() - IPDb.ipResultsDb[ip]['timestamp']).total_seconds() < 60 * 60 * 72:
+        # IP is in the database and the timestamp is less than 72 hours old
+        print("Found IP in database")
+        outString = IPDb.ipResultsDb[ip]['ipString']
+        output = IPDb.ipResultsDb[ip]['output']
+        
     else:
         print("Looking up IP via API: " + ip)
         count, outString = lookupHeadless(ip, num)
@@ -230,40 +288,55 @@ def processIp(ip, num, out):
             output = "Inconclusive evidence of malicious activity suspected / reported"
         else:
             output = "No malicious activity suspected / reported"
-        result = outString + " - " + output
-        if (out == False):
-            print('\n' + result)
-            pyperclip.copy(result)
+        # Save the IP lookup results to the database
+        if(IPDb.ipResultsDb.get(ip)):
+            IPDb.updateIpResults(ip, outString, output)
         else:
-            return result
+            IPDb.saveIpResults(ip, outString, output)
 
+    result = outString + " - " + output
+    if not out:
+        print('\n'+result)
+        pyperclip.copy(result)
+    else:
+        IPDb.writeToFile('temp_'+dbFile) # Backup if you've got multiple instances of iplookup running, one directly and one via ticketHelper
+        IPDb.writeToFile(dbFile)
+        del IPDb
+        return result
 
 def main():
-    num = -1
-    ipAddress = ''
-    intext = ''
-    
-    while True:
-        intext = input("\nQ to exit | Enter IP\n   ==> ")
-        exitStatement = "q"
-        headLookupKey = ''
+    try:
+        dirname = os.path.dirname(__file__)
+        dbFile = os.path.join(dirname, '../ipDb.csv')
+        myIPDb = IPDb(dbFile)
+        
+        num = -1
+        ipAddress = ''
+        intext = ''
+        
+        while True:
+            intext = input("\nQ to exit | Enter IP\n   ==> ")
+            exitStatement = "q"
+            headLookupKey = ''
 
-        if intext == exitStatement:
-            print("exiting...")
-            exit()
-        elif intext == headLookupKey and ipAddress != '':
-            print("Manual Look Up: " + ipAddress)
-            lookupHead(ipAddress)
-            time.sleep(1.75)
-        else:
-            if num >= 7:
-                num = 0
+            if intext == exitStatement:
+                print("exiting...")
+                exit()
+            elif intext == headLookupKey and ipAddress != '':
+                print("Manual Look Up: " + ipAddress)
+                lookupHead(ipAddress)
+                time.sleep(1.75)
             else:
-                num = num + 1
+                if num >= 7:
+                    num = 0
+                else:
+                    num = num + 1
 
-            ipAddress = intext
-            processIp(ipAddress, num, False)
-
+                ipAddress = intext
+                processIp(myIPDb, ipAddress, num, False)
+    except:
+        print("Writing to "+dbFile)
+        myIPDb.writeToFile(dbFile)
 
 if __name__ == '__main__':
     main()
