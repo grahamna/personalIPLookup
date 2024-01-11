@@ -4,6 +4,7 @@
 
 import time
 import webbrowser
+from ipwhois import IPWhois
 import requests
 import json
 import threading
@@ -83,6 +84,12 @@ def lookupHeadless(ipAddress, num):
         responseAlienVault = requests.get(urlAlienVault.strip(), headers=headersAlienVault)
         responses['alienvault'] = responseAlienVault
     
+    def whoIsIp():
+        res = IPWhois(ipAddress)
+        responses['whois'] = res.lookup_whois()
+    
+    
+    threads.append(threading.Thread(target=whoIsIp))
     threads.append(threading.Thread(target=abuseipdb_request))
     threads.append(threading.Thread(target=virustotal_request))
     threads.append(threading.Thread(target=alienvault_request))
@@ -93,8 +100,26 @@ def lookupHeadless(ipAddress, num):
     
     for thread in threads:
         thread.join()
+        
+    if responses.get('whois') != None:
+        nets = responses['whois'].get('nets')
+        data = nets[-1]
+        if data.get('description') is not None:
+            claimedISP = data.get('description')
+        else: claimedISP = ''
+        if data.get('country') is not None:
+            claimedCountry = data.get('country')
+        else: claimedCountry = ''
+        if data.get('state') is not None:
+            claimedState = data.get('state')
+        else: claimedState = ''
+        if data.get('city') is not None:
+            claimedCity = data.get('city')
+        else: claimedCity = ''
+        ipRange = data.get('range')
+    else: pass
     
-    if responses['abuseipd'].status_code == 200:
+    if responses.get('abuseipd') != None and responses['abuseipd'].status_code == 200:
             total = total+1
             contentAbuseIP = json.loads(responses['abuseipd'].text)
             data = contentAbuseIP.get('data')
@@ -106,24 +131,18 @@ def lookupHeadless(ipAddress, num):
                 count = count + (data.get('abuseConfidenceScore')/10)
             if data.get('isTor') == True:
                 count = count + 1.5
-            if data.get('isp') is not None:
-                claimedISP = data.get('isp')
-            else:
-                claimedISP = ''
+            if data.get('isp') is not None and data.get('isp') != claimedISP:
+                count = count + .5
             if data.get('usageType') is not None:
                 claimedUsageType = data.get('usageType')
             else:
                 claimedUsageType = 'Unknown'
-            if data.get('countryCode') is not None:
-                claimedCountry = data.get('countryCode')
-            else:
-                claimedCountry = ''
-            if data.get('domain') is not None:
-                claimedDomain = data.get('domain')
-            else:
-                claimedDomain = ''
+            if data.get('countryCode') != claimedCountry:
+                print("FOUND DIFFERENT COUNTRY CODE?? "+data.get('countryCode'))
+    else: pass
     
-    if responses['virustotal'].status_code == 200:
+    
+    if responses.get('virustotal') != None and responses['virustotal'].status_code == 200:
         total = total+1
         contentVirusTotal = json.loads(responses['virustotal'].text)
         data = contentVirusTotal.get('data').get('attributes')
@@ -136,17 +155,16 @@ def lookupHeadless(ipAddress, num):
         count = count + (data.get('last_analysis_stats').get('malicious') * 2.75) - (data.get('reputation')/10)
         if (count < -2):
             count = -2
-        
-    if responses['alienvault'].status_code == 200:
+    else: pass
+    
+    if responses.get('alienvault') != None and responses['alienvault'].status_code == 200:
         total = total+1
         contentAlienVault = json.loads(responses['alienvault'].text)
         if contentAlienVault.get('country_code') is not None and claimedCountry.__contains__(contentAlienVault.get('country_code')):
             if contentAlienVault.get('region') is not None:
-                claimedCountry = claimedCountry + ', '+contentAlienVault.get('region')
                 count = count - .1
             if contentAlienVault.get('city') is not None:
-                claimedCountry = claimedCountry+ ' - '+contentAlienVault.get('city')
-                count = count -.25
+                count = count -.20
         elif contentAlienVault.get('country_code') is not None:
             claimedCountry = claimedCountry + "/"+contentAlienVault.get('country_code')
             count = count + 1
@@ -155,24 +173,31 @@ def lookupHeadless(ipAddress, num):
         if contentAlienVault.get('reputation') is not None:
             count = count + contentAlienVault.get('reputation')
     
-    if responses['shodan'].status_code == 200:
+    if responses.get('shodan') != None and responses['shodan'].status_code == 200:
         total = total+1
         contentShodan = json.loads(responses['shodan'].content)
         if claimedCountry.__contains__(contentShodan.get('country_code')) is False:
-            claimedCountry = claimedCountry + "/"+contentAlienVault.get('country_code')
             count = count +1
         else:
             count = count -.25
+    else: pass
     
     if (total != 0):
         outString = ''
         count = count / total
-        if claimedISP is not None or claimedISP != '':
+        if claimedISP != '':
             outString = claimedISP
-        if claimedUsageType is not None or claimedUsageType != '':
-            outString = claimedISP + ' ['+claimedUsageType+']' 
-        if claimedCountry is not None or claimedCountry != '':    
-            outString = outString + ', ('+claimedCountry+')'
+        if claimedUsageType != '':
+            outString = claimedISP + ' ['+claimedUsageType+']'
+        if ipRange is not None or ipRange != '':
+            outString = outString + f" <Ip Range: {ipRange}>"
+        if claimedCountry != '': 
+            if claimedState != '':
+                if claimedCity != '':
+                    outString = outString + f' ({claimedCountry}, {claimedState} - {claimedCity})'
+            elif claimedCity != '':
+                outString = outString + f' ({claimedCountry}, - {claimedCity})'
+            else: outString = outString + f' ({claimedCountry})'
     
     else:
         outString = 'Unknown IP Address'
