@@ -92,6 +92,8 @@ def lookupHeadless(ipAddress, num):
     total = 0
     threads = []
     responses = {}
+
+    whois = False
     
     def abuseipdb_request():
         urlAbuseIP = 'https://api.abuseipdb.com/api/v2/check'
@@ -130,8 +132,11 @@ def lookupHeadless(ipAddress, num):
         responses['alienvault'] = responseAlienVault
     
     def whoIsIp():
-        res = IPWhois(ipAddress)
-        responses['whois'] = res.lookup_whois()
+        try:
+            res = IPWhois(ipAddress)
+            responses['whois'] = res.lookup_whois()
+        except:
+            print("whois lookup Failed")
     
     
     threads.append(threading.Thread(target=whoIsIp))
@@ -146,7 +151,7 @@ def lookupHeadless(ipAddress, num):
     for thread in threads:
         thread.join()
         
-    if responses.get('whois') != None:
+    if responses.get('whois') != True:
         nets = responses['whois'].get('nets')
         data = nets[-1]
         if data.get('description') is not None:
@@ -161,8 +166,15 @@ def lookupHeadless(ipAddress, num):
         if data.get('city') is not None:
             claimedCity = data.get('city')
         else: claimedCity = ''
-        ipRange = data.get('range')
-    else: pass
+        if data.get('range') is not None:
+            ipRange = data.get('range')
+        else: ipRange = ''
+    else: 
+        claimedISP = ''
+        claimedCountry = ''
+        claimedState = ''
+        claimedCity = ''
+        ipRange = ''
     
     if responses.get('abuseipd') != None and responses['abuseipd'].status_code == 200:
             total = total+1
@@ -177,13 +189,18 @@ def lookupHeadless(ipAddress, num):
             if data.get('isTor') == True:
                 count = count + 1.5
             if data.get('isp') is not None and data.get('isp') != claimedISP:
+                if claimedISP == '':
+                    claimedISP = data.get('isp')
+                claimedISP = claimedISP + "/"+data.get('isp')
                 count = count + .5
             if data.get('usageType') is not None:
                 claimedUsageType = data.get('usageType')
             else:
                 claimedUsageType = 'Unknown'
-            if data.get('countryCode') != claimedCountry:
+            if data.get('countryCode') != claimedCountry and data.get('countryCode') is not None and claimedCountry != '':
                 print("FOUND DIFFERENT COUNTRY CODE?? "+data.get('countryCode'))
+            elif claimedCountry == '':
+                claimedCountry = data.get('countryCode')
     else: pass
     
     
@@ -234,7 +251,7 @@ def lookupHeadless(ipAddress, num):
             outString = claimedISP
         if claimedUsageType != '':
             outString = claimedISP + ' ['+claimedUsageType+']'
-        if ipRange is not None or ipRange != '':
+        if ipRange is not None or ipRange != '' or ipRange != 'None':
             outString = outString + f" <Ip Range: {ipRange}>"
         if claimedCountry != '': 
             if claimedState != '':
@@ -263,46 +280,59 @@ def isPrivateIP(ip):
     return False
 
 
-def processIp(IPDb, ip, num, out):
-    if (IPDb is None):
-        dirname = os.path.dirname(__file__)
-        dbFile = os.path.join(dirname, '../ipDb.csv')
-        IPDb = IPDb(dbFile)
-    
+def processIp(myIPDb, ip, num, out):
     if isPrivateIP(ip):
         print('\nPrivate IP address detected')
+        return
         
-    elif IPDb.ipResultsDb.get(ip) and (datetime.now() - IPDb.ipResultsDb[ip]['timestamp']).total_seconds() < 60 * 60 * 72:
+    elif myIPDb.ipResultsDb.get(ip) and (datetime.now() - myIPDb.ipResultsDb[ip]['timestamp']).total_seconds() < 60 * 60 * 72:
         # IP is in the database and the timestamp is less than 72 hours old
         print("Found IP in database")
-        outString = IPDb.ipResultsDb[ip]['ipString']
-        output = IPDb.ipResultsDb[ip]['output']
+        outString = myIPDb.ipResultsDb[ip]['ipString']
+        output = myIPDb.ipResultsDb[ip]['output']
         
     else:
-        print("Looking up IP via API: " + ip)
-        count, outString = lookupHeadless(ip, num)
-        print('\nCount : ' + str(count) + '\n')
-        if count > 2.5:
-            output = "Malicious activity suspected / reported"
-        elif 0.9 < count <= 2.5:
-            output = "Inconclusive evidence of malicious activity suspected / reported"
-        else:
-            output = "No malicious activity suspected / reported"
-        # Save the IP lookup results to the database
-        if(IPDb.ipResultsDb.get(ip)):
-            IPDb.updateIpResults(ip, outString, output)
-        else:
-            IPDb.saveIpResults(ip, outString, output)
+        try:
+            print("Looking up IP via API: " + ip)
+            count, outString = lookupHeadless(ip, num)
+            print('\nCount : ' + str(count))
+            if count > 2.5:
+                output = "Malicious activity suspected / reported"
+            elif 0.9 < count <= 2.5:
+                output = "Inconclusive evidence of malicious activity suspected / reported"
+            else:
+                output = "No malicious activity suspected / reported"
+                
+            # Save the IP lookup results to the database
+            if(myIPDb.ipResultsDb.get(ip)):
+                myIPDb.updateIpResults(ip, outString, output)
+            else:
+                myIPDb.saveIpResults(ip, outString, output)
+        except:
+            print("LookupHeadless had an error")
+            return
 
-    result = outString + " - " + output
+    result = outString + " => " + output
     if not out:
         print('\n'+result)
-        pyperclip.copy(result)
+        pyperclip.copy(' => ' + result)
     else:
-        IPDb.writeToFile('temp_'+dbFile) # Backup if you've got multiple instances of iplookup running, one directly and one via ticketHelper
-        IPDb.writeToFile(dbFile)
-        del IPDb
         return result
+    
+def editIp(myIPDb, ip, inString):
+    splitString = inString.split(' => ')
+    try:
+        assert len(splitString) == 2
+        outString = splitString[0].strip()
+        output = splitString[1].strip()
+        assert outString != '' and output != '' and (output == 'Malicious activity suspected / reported' or output == 'Inconclusive evidence of malicious activity suspected / reported' or output == 'No malicious activity suspected / reported')
+        if(myIPDb.ipResultsDb.get(ip)):
+            myIPDb.updateIpResults(ip, outString, output)
+        else:
+            print(f"{ip} not found in IPDb, returning to main")
+    except:
+        print(f"editIP had an error, no change for IP : {ip}")
+        return
 
 def main():
     try:
@@ -315,23 +345,26 @@ def main():
         intext = ''
         
         while True:
-            intext = input("\nQ to exit | Enter IP\n   ==> ")
+            intext = input("Q to exit | Enter IP\n\t==> ")
             exitStatement = "q"
+            editStatement = "e"
             headLookupKey = ''
-
-            if intext == exitStatement:
-                print("exiting...")
-                exit()
-            elif intext == headLookupKey and ipAddress != '':
+            if intext == headLookupKey and ipAddress != '':
                 print("Manual Look Up: " + ipAddress)
                 lookupHead(ipAddress)
                 time.sleep(1.75)
+            if intext == editStatement and ipAddress != '':
+                print(f"Editing result for IP : {ipAddress}\n Use this format, IpDetails => Determination")
+                inString = input(f"\t{ipAddress} => ")
+                editIp(myIPDb, ipAddress, inString)
+            elif intext == exitStatement:
+                print("exiting...")
+                exit()
             else:
                 if num >= 7:
                     num = 0
                 else:
                     num = num + 1
-
                 ipAddress = intext
                 processIp(myIPDb, ipAddress, num, False)
     except:
