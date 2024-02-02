@@ -12,16 +12,22 @@
  This program now allows for querying the API available at VirusTotal, AlienVault, AbuseIPDB, and Shodan.io. You can press ENTER again (input with no IP) to manually bring up the previously searched IP into the browser.
 
 ## Dependencies
- webbrowser,
- requests,
- json,
- threading,
- pyperclip,
- time
+  time,
+  webbrowser,
+  os,
+  ipwhois,
+  requests,
+  json,
+  threading,
+  pyperclip,
+  csv,
+  datetime
  
 ## Compatibility
  This script was developed and tested on Windows 11 using Python 3.11.5. It may require modifications to be compatible with other operating systems or Python versions.
- ------------------------------------
+
+ ------------------------------------------------------------------
+
  # **personalTicketHelper**
  This Python script printTicketTemplate.py is used to extract and print data from a JSON / txt file temp.json. The JSON file is expected to contain network traffic logs in a specific format. The extracted data is then printed in a specific template format. (Feel free to modify to your personal use case.)
   
@@ -48,10 +54,11 @@
  The program now is able to take input/output from the clipboard, and will listen for a hotkey to be pressed before calling methods.
 
  ## Dependencies
- re,
- os,
- keyboard,
- pyperclip,
+  re,
+  os,
+  keyboard,
+  pyperclip,
+  random
 
 ## Example
  An example use case for this script would be in a security operations center (SOC), where analysts need to quickly extract and analyze network traffic logs to identify potential security incidents. The script would allow them to quickly extract the required data and view relevant IP address reputation information on various websites.
