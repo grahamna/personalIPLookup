@@ -1,3 +1,7 @@
+# Nathan Graham - Personal Use
+# This application was developed in my own free time without company resources
+# Python 3.11.5
+
 import ipLookup
 import random
 
