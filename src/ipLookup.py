@@ -368,7 +368,7 @@ def main():
                 
                 # This should be the number of API keys you've got access to
                 
-                if num >= 7:
+                if num >= len(virusTotalAPIKey)-1:
                     num = 0
                 else:
                     num = num + 1
