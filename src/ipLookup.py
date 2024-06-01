@@ -300,11 +300,11 @@ def processIp(myiPDb, ip, num, out):
             assert outString != "" and count != None
             print('\nCount : ' + str(count))
             if count > 2.5:
-                output = "Malicious activity suspected / reported"
+                output = "Strong evidence for Malicious activity"
             elif 0.9 < count <= 2.5:
-                output = "Inconclusive evidence of malicious activity reported"
+                output = "Inconclusive evidence for Malicious activity"
             else:
-                output = "No malicious activity suspected / reported"
+                output = "Little to No evidence for Malicious activity"
  
             # Save the IP lookup results to the local version of the database
             if(myiPDb.ipResultsDb.get(ipRangeDto) != None):
@@ -328,7 +328,7 @@ def editIp(myIPDb, ip, inString):
         assert len(splitString) == 2
         outString = splitString[0].strip()
         output = splitString[1].strip()
-        assert outString != '' and output != '' and (output == 'Malicious activity suspected / reported' or output == 'Inconclusive evidence of malicious activity reported' or output == 'No malicious activity suspected / reported')
+        assert outString != '' and output != '' and (output == 'Strong evidence for Malicious activity' or output == 'Inconclusive evidence for Malicious activity' or output == 'Little to No evidence for Malicious activity')
         dbHasIP = myIPDb.getIpResults(ip)
         if(dbHasIP != False):
             myIPDb.updateIpResults(dbHasIP, outString, output)
