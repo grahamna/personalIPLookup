@@ -1,14 +1,18 @@
 from datetime import datetime
 import csv
 
-class IPDb:
+class IPAddressDatabaseObj:
     def __init__(self, file):
         self.ipResultsDb = {}
         self.loadFromDatabase(file)
  
     def getIpResults(self, ipAddress):
         ipOct = ipAddress.split('.')
- 
+
+        if len(ipOct) != 4:
+            print('misconfigured ip detected')
+            return False
+
         for ipRangeKey in self.ipResultsDb.keys():
             lOct1, uOct1  = ipRangeKey.split('.')[0].split('-')
             if (int(lOct1) <= int(ipOct[0]) and int(ipOct[0]) <= int(uOct1)) == False :

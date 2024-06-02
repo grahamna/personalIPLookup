@@ -4,7 +4,9 @@
 
 ## Setup
 
- Before running the program, ensure that you have a compatible web browser installed and the path to the browser executable is correctly specified in the browser variable at the top of the program. Additionally, ensure that the links used for IP lookup are accurate and up to date. Finally, populate the api key fields for all applicable IP Database sites.
+ Before running the program, ensure that you have a compatible web browser installed and the path to the browser executable is correctly specified in the browser variable at the top of the program. Additionally, ensure that the links used for IP lookup are accurate and up to date. Finally, populate the api key fields for all applicable IP Database sites.  
+
+ Note, Linux needs to be able to access your clipboard with pyperclip, so system may need wl-clipboard, xclip, or xsel, and / or PyQt5
 
 ## Usage
 
@@ -14,7 +16,7 @@
 
  If you wish to edit an API result, you can enter 'e'
 
- ### Sample Outputs:
+### Sample Outputs:  
 
 > Sample output for a search which is not found in the db  
   
@@ -30,7 +32,7 @@ APNIC Research and Development
 > Sample output for editing a result in the db, can be done right after an   api/db call  
   
 Q to exit | Enter IP  
-        ==> e   
+        ==> e  
 Editing result for IP : 1.1.1.1  
  Use this format: IpDetails => Determination  
         1.1.1.1 => APNIC Research and Development/APNIC and CloudFlare DNS   Resolver Project [Content Delivery Network] <Ip Range: 1.1.1.0 - 1.1.1.255> (US/AU) => Little to No evidence for Malicious activity
@@ -65,14 +67,14 @@ Google LLC [Data Center/Web Hosting/Transit] <Ip Range: 8.8.8.0 - 8.8.8.255>   (
 Q to exit | Enter IP  
         ==>  
 
-  ### Database Format
+### Database Format
 
  This program produces entries in a csv file in the following format:  
 
   ipRange,ipString,output,timestamp
 
  > ipSearchString,"IP's Company [Usage] \<Ip Range: lower - higher \> (Location of IP)",First Impressions, timestamp  
-  
+------  
  > 8-8.8-8.8-8.0-255,"Google LLC [Data Center/Web Hosting/Transit] <Ip Range: 8.8.8.0 - 8.8.8.255> (US, CA - Mountain View)",No malicious activity suspected / reported,05/06/2024 21:00:02.200904
 
   The data has a "lifetime" of 72hrs. After those 72hrs, the db entry will be overwritten with the results of a new search.
