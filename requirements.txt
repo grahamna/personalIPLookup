@@ -5,5 +5,7 @@ charset-normalizer==3.3.2
 dnspython==2.0.0
 idna==3.7
 ipwhois==1.2.0
+packaging==24.0
+pyperclip==1.8.2
 requests==2.32.3
 urllib3==2.2.1
